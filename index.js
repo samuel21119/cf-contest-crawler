@@ -49,7 +49,7 @@ function getStatus(curpage) {
             var user = tr[i].find("a", "rated-user").getText();
             var problem = tr[i].findAll("td", "status-small")[1].find("a").attrs.href; problem = problem[problem.length-1];
             var verdict = tr[i].find("a", "information-box-link").getText();
-            if (verdict.indexOf("Perfect") != -1)
+            if (verdict.indexOf("Perfect") != -1 || verdict.indexOf("Accepted"))
                 verdict = "AC";
             else if (verdict.indexOf("Partial result: ") != -1) {
                 var key = "Partial result: ";
