@@ -6,7 +6,7 @@ const setCookie = require("set-cookie-parser");
 UserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0) Gecko/20100101 Firefox/68.0';
 
 const cookie = ""; // Enter your codeforces' session cookies
-const contest = "group/jyBrZLV4j8/contest/290163"; // contest url
+const contest = "group/jyBrZLV4j8/contest/290286"; // contest url
 var headers = {
     "Cookie":  cookie,
     "User-Agent": UserAgent,
@@ -41,15 +41,15 @@ function getStatus(curpage) {
         fs.writeFileSync('data.json', JSON.stringify(out, null, 2), 'utf-8'); 
         return;
     }
-    request.get({url: `${url}/page/${curpage}`, headers: headers}, async(err, resp, body) => {
+    request.get({url: `${url}/page/${curpage}?order=BY_ARRIVED_DESC`, headers: headers}, async(err, resp, body) => {
         var soup2 = new JSSoup(body);
         var table = soup2.find("table", "status-frame-datatable");
         var tr = table.findAll("tr");
         for (var i = tr.length - 1; i > 0; i--) {
             var user = tr[i].find("a", "rated-user").getText();
             var problem = tr[i].findAll("td", "status-small")[1].find("a").attrs.href; problem = problem[problem.length-1];
-            var verdict = tr[i].find("a", "information-box-link").getText();
-            if (verdict.indexOf("Perfect") != -1 || verdict.indexOf("Accepted"))
+            var verdict = tr[i].find("td", "status-verdict-cell").getText();
+            if (verdict.indexOf("Perfect") != -1 || verdict.indexOf("Accepted") != -1)
                 verdict = "AC";
             else if (verdict.indexOf("Partial result: ") != -1) {
                 var key = "Partial result: ";
